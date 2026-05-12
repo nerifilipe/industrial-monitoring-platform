@@ -82,20 +82,23 @@ body {
   gap: 8px;
 }
 
-.sidebar a {
+.sidebar nav button {
   padding: 13px 14px;
   border-radius: 12px;
   color: var(--muted);
   cursor: pointer;
   font-weight: 600;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 15px;
 }
 
-.sidebar a.active,
-.sidebar a:hover {
+.sidebar nav button.active,
+.sidebar nav button:hover {
   background: var(--blue-soft);
   color: var(--blue);
 }
-
 .main-content {
   flex: 1;
   padding: 36px;

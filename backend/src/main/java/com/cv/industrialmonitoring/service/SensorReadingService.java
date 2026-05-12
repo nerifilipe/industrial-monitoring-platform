@@ -1,5 +1,6 @@
 package com.cv.industrialmonitoring.service;
 
+import com.cv.industrialmonitoring.dto.ReadingResponseDTO;
 import com.cv.industrialmonitoring.model.SensorReading;
 import com.cv.industrialmonitoring.repository.SensorReadingRepository;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,32 @@ public class SensorReadingService {
         this.sensorReadingRepository = sensorReadingRepository;
     }
 
-    public List<SensorReading> getAllReadings() {
-        return sensorReadingRepository.findAll();
+    public List<ReadingResponseDTO> getAllReadings() {
+
+        List<SensorReading> readings = sensorReadingRepository.findAll();
+
+        return readings.stream()
+                .map(reading -> new ReadingResponseDTO(
+                        reading.getId(),
+                        reading.getValue(),
+                        reading.getTimestamp(),
+                        reading.getSensor().getName()
+                ))
+                .toList();
     }
 
-    public List<SensorReading> getReadingsBySensorId(Long sensorId) {
-        return sensorReadingRepository.findBySensorId(sensorId);
+    public List<ReadingResponseDTO> getReadingsBySensorId(Long sensorId) {
+
+        List<SensorReading> readings =
+                sensorReadingRepository.findBySensorId(sensorId);
+
+        return readings.stream()
+                .map(reading -> new ReadingResponseDTO(
+                        reading.getId(),
+                        reading.getValue(),
+                        reading.getTimestamp(),
+                        reading.getSensor().getName()
+                ))
+                .toList();
     }
 }

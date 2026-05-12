@@ -1,6 +1,6 @@
 package com.cv.industrialmonitoring.controller;
 
-import com.cv.industrialmonitoring.model.SensorReading;
+import com.cv.industrialmonitoring.dto.ReadingResponseDTO;
 import com.cv.industrialmonitoring.service.SensorReadingService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +16,14 @@ public class SensorReadingController {
     }
 
     @GetMapping("/api/readings")
-    public List<SensorReading> getAllReadings() {
+    public List<ReadingResponseDTO> getAllReadings() {
         return sensorReadingService.getAllReadings();
     }
 
     @GetMapping("/api/sensors/{sensorId}/readings")
-    public List<SensorReading> getReadingsBySensorId(@PathVariable Long sensorId) {
+    public List<ReadingResponseDTO> getReadingsBySensorId(
+            @PathVariable Long sensorId
+    ) {
         return sensorReadingService.getReadingsBySensorId(sensorId);
     }
 }

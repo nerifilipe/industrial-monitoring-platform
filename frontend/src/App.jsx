@@ -1,30 +1,49 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+} from "recharts";
 import "./App.css";
 
 function App() {
   const [stats, setStats] = useState(null);
   const [machines, setMachines] = useState([]);
+  const [readings, setReadings] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/dashboard")
-      .then((response) => {
-        setStats(response.data);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch dashboard stats:", error);
-      });
+    fetchDashboardData();
 
-    axios
-      .get("http://localhost:8080/api/machines")
-      .then((response) => {
-        setMachines(response.data);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch machines:", error);
-      });
+    const interval = setInterval(() => {
+      fetchDashboardData();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
+
+  function fetchDashboardData() {
+    axios.get("http://localhost:8080/api/dashboard").then((response) => {
+      setStats(response.data);
+    });
+
+    axios.get("http://localhost:8080/api/machines").then((response) => {
+      setMachines(response.data);
+    });
+
+    axios.get("http://localhost:8080/api/readings").then((response) => {
+      setReadings(response.data);
+    });
+  }
+
+  const latestReadings = readings.slice(-20).map((reading) => ({
+    ...reading,
+    time: new Date(reading.timestamp).toLocaleTimeString(),
+  }));
 
   return (
     <main className="app">
@@ -55,6 +74,28 @@ function App() {
           </div>
         </section>
       )}
+
+      <section className="chart-section">
+        <h2>Latest Sensor Readings</h2>
+
+        <div className="chart-container">
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={latestReadings}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="time" />
+              <YAxis />
+              <Tooltip />
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke="#2563eb"
+                strokeWidth={2}
+                dot={false}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </section>
 
       <section className="table-section">
         <h2>Machines</h2>

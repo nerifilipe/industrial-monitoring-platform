@@ -4,6 +4,7 @@ import "./App.css";
 
 function App() {
   const [stats, setStats] = useState(null);
+  const [machines, setMachines] = useState([]);
 
   useEffect(() => {
     axios
@@ -13,6 +14,15 @@ function App() {
       })
       .catch((error) => {
         console.error("Failed to fetch dashboard stats:", error);
+      });
+
+    axios
+      .get("http://localhost:8080/api/machines")
+      .then((response) => {
+        setMachines(response.data);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch machines:", error);
       });
   }, []);
 
@@ -45,6 +55,36 @@ function App() {
           </div>
         </section>
       )}
+
+      <section className="table-section">
+        <h2>Machines</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Location</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {machines.map((machine) => (
+              <tr key={machine.id}>
+                <td>{machine.name}</td>
+                <td>{machine.type}</td>
+                <td>
+                  <span className={`status ${machine.status.toLowerCase()}`}>
+                    {machine.status}
+                  </span>
+                </td>
+                <td>{machine.location}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
     </main>
   );
 }

@@ -24,4 +24,9 @@ public class SensorController {
     public List<Sensor> getSensorsByMachineId(@PathVariable Long machineId) {
         return sensorService.getSensorsByMachineId(machineId);
     }
+
+    @PostMapping("/api/sensors")
+    public Sensor createSensor(@RequestBody Sensor sensor) {
+        return sensorService.createSensor(sensor);
+    }
 }

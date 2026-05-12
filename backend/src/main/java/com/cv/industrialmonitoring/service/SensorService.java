@@ -22,4 +22,8 @@ public class SensorService {
     public List<Sensor> getSensorsByMachineId(Long machineId) {
         return sensorRepository.findByMachineId(machineId);
     }
+
+    public Sensor createSensor(Sensor sensor) {
+        return sensorRepository.save(sensor);
+    }
 }

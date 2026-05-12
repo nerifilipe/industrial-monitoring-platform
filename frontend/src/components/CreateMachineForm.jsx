@@ -41,7 +41,7 @@ function CreateMachineForm({ onMachineCreated }) {
   }
 
   return (
-    <section className="panel">
+    <section className="panel form-panel">
       <div className="panel-header">
         <div>
           <h2>Add Machine</h2>

@@ -548,3 +548,42 @@ tbody tr:hover {
 .resolve-button:hover {
   background: #1d4ed8;
 }
+
+.page-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.form-panel {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.form-panel .panel-header {
+  margin-bottom: 18px;
+}
+
+.form-panel h2 {
+  font-size: 20px;
+}
+
+.form-panel p {
+  max-width: 520px;
+}
+
+.machine-form {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr) auto;
+  gap: 14px;
+  align-items: end;
+}
+
+.machine-form input,
+.machine-form select {
+  min-height: 46px;
+}
+
+.machine-form button {
+  min-height: 46px;
+  white-space: nowrap;
+}

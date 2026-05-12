@@ -106,19 +106,23 @@ function App() {
 
     if (activePage === "machines") {
       return (
-        <>
+        <div className="page-stack">
           <CreateMachineForm onMachineCreated={fetchData} />
           <MachinesTable machines={machines} />
-        </>
+        </div>
       );
     }
 
     if (activePage === "sensors") {
       return (
-        <>
-          <CreateSensorForm machines={machines} onSensorCreated={fetchData} />
+        <div className="page-stack">
+          <CreateSensorForm
+            machines={machines}
+            onSensorCreated={fetchData}
+          />
+
           <SensorsTable sensors={sensors} />
-        </>
+        </div>
       );
     }
 

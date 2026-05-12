@@ -48,7 +48,7 @@ function CreateSensorForm({ machines, onSensorCreated }) {
   }
 
   return (
-    <section className="panel">
+    <section className="panel form-panel">
       <div className="panel-header">
         <div>
           <h2>Add Sensor</h2>

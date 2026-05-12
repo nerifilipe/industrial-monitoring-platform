@@ -6,6 +6,7 @@ import com.cv.industrialmonitoring.repository.SensorReadingRepository;
 import com.cv.industrialmonitoring.repository.SensorRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import com.cv.industrialmonitoring.service.AlertService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,15 +18,17 @@ public class SensorSimulator {
     private final SensorRepository sensorRepository;
     private final SensorReadingRepository sensorReadingRepository;
     private final Random random = new Random();
+    private final AlertService alertService;
 
     public SensorSimulator(
-            SensorRepository sensorRepository,
-            SensorReadingRepository sensorReadingRepository
-    ) {
-        this.sensorRepository = sensorRepository;
-        this.sensorReadingRepository = sensorReadingRepository;
-    }
-
+        SensorRepository sensorRepository,
+        SensorReadingRepository sensorReadingRepository,
+        AlertService alertService
+) {
+    this.sensorRepository = sensorRepository;
+    this.sensorReadingRepository = sensorReadingRepository;
+    this.alertService = alertService;
+}
     @Scheduled(fixedRate = 5000)
     public void generateReadings() {
         List<Sensor> sensors = sensorRepository.findAll();
@@ -44,6 +47,7 @@ public class SensorSimulator {
             );
 
             sensorReadingRepository.save(reading);
+            alertService.evaluateReading(sensor, value);
         }
     }
 

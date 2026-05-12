@@ -2,8 +2,7 @@ package com.cv.industrialmonitoring.controller;
 
 import com.cv.industrialmonitoring.model.Machine;
 import com.cv.industrialmonitoring.service.MachineService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +18,10 @@ public class MachineController {
     @GetMapping("/api/machines")
     public List<Machine> getAllMachines() {
         return machineService.getAllMachines();
+    }
+
+    @PostMapping("/api/machines")
+    public Machine createMachine(@RequestBody Machine machine) {
+        return machineService.createMachine(machine);
     }
 }

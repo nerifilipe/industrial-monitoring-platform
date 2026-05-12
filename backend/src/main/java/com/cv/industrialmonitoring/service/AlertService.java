@@ -33,6 +33,16 @@ public class AlertService {
                 .toList();
     }
 
+    public void resolveAlert(Long id) {
+
+    Alert alert = alertRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Alert not found"));
+
+    alert.setResolved(true);
+
+    alertRepository.save(alert);
+    }
+
     public void evaluateReading(Sensor sensor, double value) {
         String type = sensor.getType();
 

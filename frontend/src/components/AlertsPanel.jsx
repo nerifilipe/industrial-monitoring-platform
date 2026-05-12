@@ -1,5 +1,14 @@
-function AlertsPanel({ alerts }) {
+import axios from "axios";
+
+const API_URL = "http://localhost:8080/api";
+
+function AlertsPanel({ alerts, onAlertResolved }) {
   const latestAlerts = alerts.slice().reverse();
+
+  async function handleResolve(alertId) {
+    await axios.put(`${API_URL}/alerts/${alertId}/resolve`);
+    onAlertResolved();
+  }
 
   return (
     <section className="panel">
@@ -34,9 +43,14 @@ function AlertsPanel({ alerts }) {
                   {alert.machineName} • {alert.sensorName}
                 </span>
 
-                <small>
-                  {new Date(alert.timestamp).toLocaleString()}
-                </small>
+                <small>{new Date(alert.timestamp).toLocaleString()}</small>
+
+                <button
+                  className="resolve-button"
+                  onClick={() => handleResolve(alert.id)}
+                >
+                  Resolve
+                </button>
               </div>
             </div>
           ))}

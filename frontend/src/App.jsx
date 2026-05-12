@@ -64,7 +64,7 @@ function App() {
             <ReadingsChart readings={readings} />
 
             <div className="right-column">
-              <AlertsPanel alerts={alerts.slice(0, 5)} />
+              <AlertsPanel alerts={alerts.slice(0, 5)} onAlertResolved={fetchData} />
 
               <section className="insight-card">
                 <h2>System Health</h2>
@@ -123,7 +123,7 @@ function App() {
       );
     }
     if (activePage === "alerts") {
-      return <AlertsPanel alerts={alerts} />;
+      <AlertsPanel alerts={alerts} onAlertResolved={fetchData} />
     }
   }
 

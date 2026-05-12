@@ -5,76 +5,110 @@ import ReadingsChart from "./components/ReadingsChart";
 import MachinesTable from "./components/MachinesTable";
 import "./App.css";
 
+const API_URL = "http://localhost:8080/api";
+
 function App() {
   const [stats, setStats] = useState(null);
   const [machines, setMachines] = useState([]);
   const [readings, setReadings] = useState([]);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => {
-    fetchDashboardData();
-
-    const interval = setInterval(() => {
-      fetchDashboardData();
-    }, 5000);
-
+    fetchData();
+    const interval = setInterval(fetchData, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  function fetchDashboardData() {
-    axios.get("http://localhost:8080/api/dashboard").then((response) => {
-      setStats(response.data);
-    });
+  async function fetchData() {
+    const [statsRes, machinesRes, readingsRes] = await Promise.all([
+      axios.get(`${API_URL}/dashboard`),
+      axios.get(`${API_URL}/machines`),
+      axios.get(`${API_URL}/readings`),
+    ]);
 
-    axios.get("http://localhost:8080/api/machines").then((response) => {
-      setMachines(response.data);
-    });
-
-    axios.get("http://localhost:8080/api/readings").then((response) => {
-      setReadings(response.data);
-    });
+    setStats(statsRes.data);
+    setMachines(machinesRes.data);
+    setReadings(readingsRes.data);
+    setLastUpdated(new Date().toLocaleTimeString());
   }
 
   return (
-    <div className="layout">
+    <div className="app-shell">
       <aside className="sidebar">
-        <h2>IMP</h2>
+        <div className="brand">
+          <div className="brand-icon">IM</div>
+          <div>
+            <strong>Industrial</strong>
+            <span>Monitoring</span>
+          </div>
+        </div>
 
         <nav>
-          <span>Dashboard</span>
-          <span>Machines</span>
-          <span>Sensors</span>
-          <span>Readings</span>
+          <a className="active">Overview</a>
+          <a>Machines</a>
+          <a>Sensors</a>
+          <a>Readings</a>
+          <a>Alerts</a>
         </nav>
       </aside>
 
-      <main className="app">
-        <header className="topbar">
+      <main className="main-content">
+        <header className="page-header">
           <div>
-            <h1>Industrial Monitoring Platform</h1>
-            <p>Real-time industrial telemetry dashboard</p>
+            <p className="eyebrow">Real-time factory telemetry</p>
+            <h1>Operations Dashboard</h1>
+            <p className="subtitle">
+              Monitor machine health, sensor activity and live industrial readings.
+            </p>
           </div>
 
-          <span className="live-badge">LIVE</span>
+          <div className="header-status">
+            <span className="pulse"></span>
+            <div>
+              <strong>Live system</strong>
+              <small>Updated {lastUpdated || "loading..."}</small>
+            </div>
+          </div>
         </header>
 
         {!stats ? (
-          <p>Loading dashboard data...</p>
+          <div className="loading-card">Loading dashboard data...</div>
         ) : (
-          <section className="stats-grid">
-            <StatsCard label="Total Machines" value={stats.totalMachines} />
-            <StatsCard label="Active Sensors" value={stats.activeSensors} />
-            <StatsCard label="Total Readings" value={stats.totalReadings} />
-            <StatsCard
-              label="Offline Machines"
-              value={stats.offlineMachines}
-              danger
-            />
-          </section>
+          <>
+            <section className="stats-grid">
+              <StatsCard label="Machines" value={stats.totalMachines} helper="registered assets" />
+              <StatsCard label="Active Sensors" value={stats.activeSensors} helper="currently reporting" />
+              <StatsCard label="Readings" value={stats.totalReadings} helper="stored measurements" />
+              <StatsCard label="Offline" value={stats.offlineMachines} helper="requires attention" danger />
+            </section>
+
+            <section className="dashboard-grid">
+              <ReadingsChart readings={readings} />
+              <div className="insight-card">
+                <h2>System Health</h2>
+                <div className="health-row">
+                  <span>Operational status</span>
+                  <strong className="success">Stable</strong>
+                </div>
+                <div className="health-row">
+                  <span>Data refresh</span>
+                  <strong>5s interval</strong>
+                </div>
+                <div className="health-row">
+                  <span>Offline machines</span>
+                  <strong className={stats.offlineMachines > 0 ? "danger-text" : "success"}>
+                    {stats.offlineMachines}
+                  </strong>
+                </div>
+                <p className="insight-note">
+                  Sensor readings are automatically generated by the backend simulator and persisted in PostgreSQL.
+                </p>
+              </div>
+            </section>
+
+            <MachinesTable machines={machines} />
+          </>
         )}
-
-        <ReadingsChart readings={readings} />
-
-        <MachinesTable machines={machines} />
       </main>
     </div>
   );

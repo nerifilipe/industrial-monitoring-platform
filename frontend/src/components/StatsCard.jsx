@@ -1,9 +1,12 @@
-function StatsCard({ label, value, danger }) {
+function StatsCard({ label, value, helper, danger }) {
   return (
-    <div className={`stat-card ${danger ? "danger" : ""}`}>
-      <p>{label}</p>
-      <h2>{value}</h2>
-    </div>
+    <article className={`stat-card ${danger ? "danger" : ""}`}>
+      <div>
+        <span>{label}</span>
+        <h2>{value}</h2>
+      </div>
+      <p>{helper}</p>
+    </article>
   );
 }
 

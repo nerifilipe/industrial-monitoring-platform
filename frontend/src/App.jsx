@@ -7,6 +7,7 @@ import AlertsPanel from "./components/AlertsPanel";
 import CreateMachineForm from "./components/CreateMachineForm";
 import CreateSensorForm from "./components/CreateSensorForm";
 import SensorsTable from "./components/SensorsTable";
+import ReadingsTable from "./components/ReadingsTable";
 import "./App.css";
 
 const API_URL = "http://localhost:8080/api";
@@ -113,10 +114,14 @@ function App() {
       );
     }
 
-    if (activePage === "readings") {
-      return <ReadingsChart readings={readings} />;
+   if (activePage === "readings") {
+      return (
+        <>
+          <ReadingsChart readings={readings} />
+          <ReadingsTable readings={readings} />
+        </>
+      );
     }
-
     if (activePage === "alerts") {
       return <AlertsPanel alerts={alerts} />;
     }

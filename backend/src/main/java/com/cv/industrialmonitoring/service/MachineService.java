@@ -1,6 +1,7 @@
 package com.cv.industrialmonitoring.service;
 
 import com.cv.industrialmonitoring.model.Machine;
+import com.cv.industrialmonitoring.repository.MachineRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,11 +9,17 @@ import java.util.List;
 @Service
 public class MachineService {
 
+    private final MachineRepository machineRepository;
+
+    public MachineService(MachineRepository machineRepository) {
+        this.machineRepository = machineRepository;
+    }
+
     public List<Machine> getAllMachines() {
-        return List.of(
-                new Machine(1L, "Conveyor Belt 01", "CONVEYOR", "ONLINE", "Factory Floor A"),
-                new Machine(2L, "Hydraulic Press 02", "PRESS", "WARNING", "Factory Floor B"),
-                new Machine(3L, "Robot Arm 03", "ROBOT_ARM", "OFFLINE", "Assembly Line 1")
-        );
+        return machineRepository.findAll();
+    }
+
+    public Machine createMachine(Machine machine) {
+        return machineRepository.save(machine);
     }
 }

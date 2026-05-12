@@ -3,8 +3,6 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/api";
 
 function AlertsPanel({ alerts, onAlertResolved }) {
-  const latestAlerts = alerts.slice().reverse();
-
   async function handleResolve(alertId) {
     await axios.put(`${API_URL}/alerts/${alertId}/resolve`);
     onAlertResolved();
@@ -30,7 +28,7 @@ function AlertsPanel({ alerts, onAlertResolved }) {
         </div>
       ) : (
         <div className="alerts-list">
-          {latestAlerts.map((alert) => (
+          {alerts.map((alert) => (
             <div className="alert-item" key={alert.id}>
               <div className={`alert-badge ${alert.severity.toLowerCase()}`}>
                 {alert.severity}

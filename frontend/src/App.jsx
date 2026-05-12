@@ -20,6 +20,10 @@ function App() {
   const [alerts, setAlerts] = useState([]);
   const [sensors, setSensors] = useState([]);
   const [lastUpdated, setLastUpdated] = useState(null);
+  
+  const latestAlerts = [...alerts].sort(
+  (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+);
 
   useEffect(() => {
     fetchData();
@@ -41,6 +45,7 @@ function App() {
     setMachines(machinesRes.data);
     setReadings(readingsRes.data);
     setAlerts(alertsRes.data);
+    console.log("Alerts from API:", alertsRes.data);
     setSensors(sensorsRes.data);
     setLastUpdated(new Date().toLocaleTimeString());
   }
@@ -64,7 +69,10 @@ function App() {
             <ReadingsChart readings={readings} />
 
             <div className="right-column">
-              <AlertsPanel alerts={alerts.slice(0, 5)} onAlertResolved={fetchData} />
+              <AlertsPanel
+              alerts={latestAlerts.slice(0, 5)}
+              onAlertResolved={fetchData}
+            />
 
               <section className="insight-card">
                 <h2>System Health</h2>
@@ -123,8 +131,8 @@ function App() {
       );
     }
     if (activePage === "alerts") {
-      <AlertsPanel alerts={alerts} onAlertResolved={fetchData} />
-    }
+  return <AlertsPanel alerts={latestAlerts} onAlertResolved={fetchData} />;
+}
   }
 
   const pageTitles = {

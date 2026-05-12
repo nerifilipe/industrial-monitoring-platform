@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  ResponsiveContainer,
-} from "recharts";
+import StatsCard from "./components/StatsCard";
+import ReadingsChart from "./components/ReadingsChart";
+import MachinesTable from "./components/MachinesTable";
 import "./App.css";
 
 function App() {
@@ -40,93 +34,49 @@ function App() {
     });
   }
 
-  const latestReadings = readings.slice(-20).map((reading) => ({
-    ...reading,
-    time: new Date(reading.timestamp).toLocaleTimeString(),
-  }));
-
   return (
-    <main className="app">
-      <h1>Industrial Monitoring Platform</h1>
+    <div className="layout">
+      <aside className="sidebar">
+        <h2>IMP</h2>
 
-      {!stats ? (
-        <p>Loading dashboard data...</p>
-      ) : (
-        <section className="stats-grid">
-          <div className="stat-card">
-            <h2>{stats.totalMachines}</h2>
-            <p>Total Machines</p>
+        <nav>
+          <span>Dashboard</span>
+          <span>Machines</span>
+          <span>Sensors</span>
+          <span>Readings</span>
+        </nav>
+      </aside>
+
+      <main className="app">
+        <header className="topbar">
+          <div>
+            <h1>Industrial Monitoring Platform</h1>
+            <p>Real-time industrial telemetry dashboard</p>
           </div>
 
-          <div className="stat-card">
-            <h2>{stats.activeSensors}</h2>
-            <p>Active Sensors</p>
-          </div>
+          <span className="live-badge">LIVE</span>
+        </header>
 
-          <div className="stat-card">
-            <h2>{stats.totalReadings}</h2>
-            <p>Total Readings</p>
-          </div>
+        {!stats ? (
+          <p>Loading dashboard data...</p>
+        ) : (
+          <section className="stats-grid">
+            <StatsCard label="Total Machines" value={stats.totalMachines} />
+            <StatsCard label="Active Sensors" value={stats.activeSensors} />
+            <StatsCard label="Total Readings" value={stats.totalReadings} />
+            <StatsCard
+              label="Offline Machines"
+              value={stats.offlineMachines}
+              danger
+            />
+          </section>
+        )}
 
-          <div className="stat-card">
-            <h2>{stats.offlineMachines}</h2>
-            <p>Offline Machines</p>
-          </div>
-        </section>
-      )}
+        <ReadingsChart readings={readings} />
 
-      <section className="chart-section">
-        <h2>Latest Sensor Readings</h2>
-
-        <div className="chart-container">
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={latestReadings}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="time" />
-              <YAxis />
-              <Tooltip />
-              <Line
-                type="monotone"
-                dataKey="value"
-                stroke="#2563eb"
-                strokeWidth={2}
-                dot={false}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </section>
-
-      <section className="table-section">
-        <h2>Machines</h2>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Status</th>
-              <th>Location</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {machines.map((machine) => (
-              <tr key={machine.id}>
-                <td>{machine.name}</td>
-                <td>{machine.type}</td>
-                <td>
-                  <span className={`status ${machine.status.toLowerCase()}`}>
-                    {machine.status}
-                  </span>
-                </td>
-                <td>{machine.location}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
-    </main>
+        <MachinesTable machines={machines} />
+      </main>
+    </div>
   );
 }
 

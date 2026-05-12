@@ -1,0 +1,13 @@
+package com.cv.industrialmonitoring;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class IndustrialMonitoringApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}

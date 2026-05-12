@@ -2,6 +2,7 @@ package com.cv.industrialmonitoring.controller;
 
 import com.cv.industrialmonitoring.model.Machine;
 import com.cv.industrialmonitoring.service.MachineService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class MachineController {
     }
 
     @PostMapping("/api/machines")
-    public Machine createMachine(@RequestBody Machine machine) {
+    public Machine createMachine(@Valid @RequestBody Machine machine) {
         return machineService.createMachine(machine);
     }
 }

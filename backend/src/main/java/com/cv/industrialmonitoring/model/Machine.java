@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Machine {
@@ -12,12 +13,16 @@ public class Machine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Machine name is required")
     private String name;
 
+    @NotBlank(message = "Machine type is required")
     private String type;
 
+    @NotBlank(message = "Machine status is required")
     private String status;
 
+    @NotBlank(message = "Machine location is required")
     private String location;
 
     public Machine() {

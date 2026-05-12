@@ -2,12 +2,13 @@ package com.cv.industrialmonitoring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class IndustrialMonitoringApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(IndustrialMonitoringApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(IndustrialMonitoringApplication.class, args);
+    }
 }

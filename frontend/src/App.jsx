@@ -6,6 +6,7 @@ import MachinesTable from "./components/MachinesTable";
 import AlertsPanel from "./components/AlertsPanel";
 import CreateMachineForm from "./components/CreateMachineForm";
 import CreateSensorForm from "./components/CreateSensorForm";
+import SensorsTable from "./components/SensorsTable";
 import "./App.css";
 
 const API_URL = "http://localhost:8080/api";
@@ -16,6 +17,7 @@ function App() {
   const [readings, setReadings] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [sensors, setSensors] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -26,17 +28,20 @@ function App() {
   }, []);
 
   async function fetchData() {
-    const [statsRes, machinesRes, readingsRes, alertsRes] = await Promise.all([
-      axios.get(`${API_URL}/dashboard`),
-      axios.get(`${API_URL}/machines`),
-      axios.get(`${API_URL}/readings`),
-      axios.get(`${API_URL}/alerts`),
-    ]);
+    const [statsRes, machinesRes, readingsRes, alertsRes, sensorsRes] =
+    await Promise.all([
+    axios.get(`${API_URL}/dashboard`),
+    axios.get(`${API_URL}/machines`),
+    axios.get(`${API_URL}/readings`),
+    axios.get(`${API_URL}/alerts`),
+    axios.get(`${API_URL}/sensors`),
+  ]);
 
     setStats(statsRes.data);
     setMachines(machinesRes.data);
     setReadings(readingsRes.data);
     setAlerts(alertsRes.data);
+    setSensors(sensorsRes.data);
     setLastUpdated(new Date().toLocaleTimeString());
   }
 
@@ -156,6 +161,7 @@ function App() {
               onSensorCreated={fetchData}
             />
             <MachinesTable machines={machines} />
+            <SensorsTable sensors={sensors} />
           </>
         )}
       </main>

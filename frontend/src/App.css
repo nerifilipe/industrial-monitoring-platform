@@ -439,3 +439,59 @@ tbody tr:hover {
     padding: 22px;
   }
 }
+
+.machine-form {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.machine-form input,
+.machine-form select {
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 14px;
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+.machine-form input:focus,
+.machine-form select:focus {
+  outline: 2px solid var(--blue-soft);
+  border-color: var(--blue);
+}
+
+.machine-form button {
+  padding: 13px 16px;
+  border: none;
+  border-radius: 12px;
+  background: var(--blue);
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.machine-form button:hover {
+  background: #1d4ed8;
+}
+
+.form-error {
+  grid-column: 1 / -1;
+  color: var(--red);
+  margin: 0;
+  font-weight: 700;
+}
+
+@media (max-width: 1100px) {
+  .machine-form {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .machine-form {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,20 +1,27 @@
 function AlertsPanel({ alerts }) {
+  const latestAlerts = alerts.slice().reverse();
+
   return (
     <section className="panel">
       <div className="panel-header">
         <div>
           <h2>Active Alerts</h2>
-          <p>Real-time industrial warnings</p>
+          <p>{alerts.length} unresolved warning events</p>
         </div>
+
+        <span className={alerts.length > 0 ? "alert-counter active" : "alert-counter"}>
+          {alerts.length}
+        </span>
       </div>
 
       {alerts.length === 0 ? (
         <div className="empty-alerts">
-          No active alerts
+          <strong>No active alerts</strong>
+          <span>All monitored systems are operating within safe thresholds.</span>
         </div>
       ) : (
         <div className="alerts-list">
-          {alerts.map((alert) => (
+          {latestAlerts.map((alert) => (
             <div className="alert-item" key={alert.id}>
               <div className={`alert-badge ${alert.severity.toLowerCase()}`}>
                 {alert.severity}
@@ -26,6 +33,10 @@ function AlertsPanel({ alerts }) {
                 <span>
                   {alert.machineName} • {alert.sensorName}
                 </span>
+
+                <small>
+                  {new Date(alert.timestamp).toLocaleString()}
+                </small>
               </div>
             </div>
           ))}

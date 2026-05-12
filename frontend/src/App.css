@@ -498,3 +498,37 @@ tbody tr:hover {
     grid-template-columns: 1fr;
   }
 }
+
+.alert-counter {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.alert-counter.active {
+  background: var(--red-soft);
+  color: var(--red);
+}
+
+.empty-alerts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--muted);
+  padding: 14px 0;
+}
+
+.empty-alerts strong {
+  color: var(--green);
+}
+
+.alert-content small {
+  color: var(--muted);
+  font-size: 12px;
+}

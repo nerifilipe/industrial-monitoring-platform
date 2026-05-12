@@ -50,14 +50,22 @@ public class AlertService {
     }
 
     private void createAlert(String severity, String message, Sensor sensor) {
-        Alert alert = new Alert(
-                severity,
-                message,
-                LocalDateTime.now(),
-                false,
-                sensor
-        );
 
-        alertRepository.save(alert);
+    boolean alreadyHasActiveAlert =
+            alertRepository.existsBySensorIdAndResolvedFalse(sensor.getId());
+
+    if (alreadyHasActiveAlert) {
+        return;
     }
+
+    Alert alert = new Alert(
+            severity,
+            message,
+            LocalDateTime.now(),
+            false,
+            sensor
+    );
+
+    alertRepository.save(alert);
+}
 }

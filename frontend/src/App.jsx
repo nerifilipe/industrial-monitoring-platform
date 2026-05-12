@@ -5,6 +5,7 @@ import ReadingsChart from "./components/ReadingsChart";
 import MachinesTable from "./components/MachinesTable";
 import AlertsPanel from "./components/AlertsPanel";
 import CreateMachineForm from "./components/CreateMachineForm";
+import CreateSensorForm from "./components/CreateSensorForm";
 import "./App.css";
 
 const API_URL = "http://localhost:8080/api";
@@ -150,7 +151,10 @@ function App() {
               </div>
             </section>
             <CreateMachineForm onMachineCreated={fetchData} />
-
+            <CreateSensorForm
+              machines={machines}
+              onSensorCreated={fetchData}
+            />
             <MachinesTable machines={machines} />
           </>
         )}

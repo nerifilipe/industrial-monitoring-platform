@@ -1,15 +1,44 @@
 services:
+
   postgres:
     image: postgres:17
     container_name: industrial-postgres
+
     environment:
       POSTGRES_DB: industrial_monitoring
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
     ports:
-      - "5433:5432"
+      - "5432:5432"
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: industrial-backend
+
+    depends_on:
+      - postgres
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/industrial_monitoring
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend
+    container_name: industrial-frontend
+
+    depends_on:
+      - backend
+
+    ports:
+      - "5173:5173"
 
 volumes:
   postgres_data:

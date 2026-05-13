@@ -137,7 +137,10 @@ function App() {
             onSensorCreated={fetchData}
           />
 
-          <SensorsTable sensors={sensors} />
+          <SensorsTable
+            sensors={sensors}
+            onSensorDeleted={fetchData}
+          />
         </div>
       );
     }

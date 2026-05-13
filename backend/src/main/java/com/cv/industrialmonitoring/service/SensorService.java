@@ -26,4 +26,7 @@ public class SensorService {
     public Sensor createSensor(Sensor sensor) {
         return sensorRepository.save(sensor);
     }
+    public void deleteSensor(Long id) {
+        sensorRepository.deleteById(id);
+    }
 }

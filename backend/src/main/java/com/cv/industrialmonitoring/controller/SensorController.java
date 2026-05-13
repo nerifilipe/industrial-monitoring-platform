@@ -29,4 +29,8 @@ public class SensorController {
     public Sensor createSensor(@RequestBody Sensor sensor) {
         return sensorService.createSensor(sensor);
     }
+    @DeleteMapping("/api/sensors/{id}")
+    public void deleteSensor(@PathVariable Long id) {
+        sensorService.deleteSensor(id);
+    }
 }

@@ -1,4 +1,20 @@
-function SensorsTable({ sensors }) {
+import axios from "axios";
+
+const API_URL = "http://localhost:8080/api";
+
+function SensorsTable({ sensors, onSensorDeleted }) {
+  async function handleDelete(sensorId) {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this sensor? This will also delete its readings and alerts."
+    );
+
+    if (!confirmed) return;
+
+    await axios.delete(`${API_URL}/sensors/${sensorId}`);
+
+    onSensorDeleted();
+  }
+
   return (
     <section className="panel">
       <div className="panel-header">
@@ -17,6 +33,7 @@ function SensorsTable({ sensors }) {
               <th>Unit</th>
               <th>Status</th>
               <th>Machine</th>
+              <th>Actions</th>
             </tr>
           </thead>
 
@@ -34,6 +51,14 @@ function SensorsTable({ sensors }) {
                   </span>
                 </td>
                 <td>{sensor.machine?.name}</td>
+                <td>
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDelete(sensor.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

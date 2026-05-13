@@ -7,6 +7,7 @@ function MachinesTable({
   machines,
   onSelectMachine,
   onMachineDeleted,
+  onEditMachine,
 }) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
@@ -23,6 +24,11 @@ function MachinesTable({
     await axios.delete(`${API_URL}/machines/${machineId}`);
 
     onMachineDeleted();
+  }
+
+  function handleEdit(event, machine) {
+    event.stopPropagation();
+    onEditMachine(machine);
   }
 
   const filteredMachines = useMemo(() => {
@@ -100,14 +106,21 @@ function MachinesTable({
                 <td>{machine.location}</td>
 
                 <td>
-                  <button
-                    className="delete-button"
-                    onClick={(event) =>
-                      handleDelete(event, machine.id)
-                    }
-                  >
-                    Delete
-                  </button>
+                  <div className="action-buttons">
+                    <button
+                      className="edit-button"
+                      onClick={(event) => handleEdit(event, machine)}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="delete-button"
+                      onClick={(event) => handleDelete(event, machine.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

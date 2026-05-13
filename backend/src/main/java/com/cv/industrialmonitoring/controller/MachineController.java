@@ -29,4 +29,11 @@ public class MachineController {
     public void deleteMachine(@PathVariable Long id) {
         machineService.deleteMachine(id);
     }
+    @PutMapping("/api/machines/{id}")
+    public Machine updateMachine(
+            @PathVariable Long id,
+            @Valid @RequestBody Machine machine
+    ) {
+        return machineService.updateMachine(id, machine);
+    }
 }

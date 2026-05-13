@@ -25,4 +25,15 @@ public class MachineService {
     public void deleteMachine(Long id) {
         machineRepository.deleteById(id);
     }
+    public Machine updateMachine(Long id, Machine updatedMachine) {
+        Machine machine = machineRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Machine not found"));
+
+        machine.setName(updatedMachine.getName());
+        machine.setType(updatedMachine.getType());
+        machine.setStatus(updatedMachine.getStatus());
+        machine.setLocation(updatedMachine.getLocation());
+
+        return machineRepository.save(machine);
+    }
 }

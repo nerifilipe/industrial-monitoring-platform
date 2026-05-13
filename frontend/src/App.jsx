@@ -9,6 +9,7 @@ import CreateSensorForm from "./components/CreateSensorForm";
 import SensorsTable from "./components/SensorsTable";
 import ReadingsTable from "./components/ReadingsTable";
 import MachineDetail from "./components/MachineDetail";
+import EditMachineModal from "./components/EditMachineModal";
 import "./App.css";
 
 const API_URL = "http://localhost:8080/api";
@@ -21,6 +22,7 @@ function App() {
   const [alerts, setAlerts] = useState([]);
   const [sensors, setSensors] = useState([]);
   const [selectedMachine, setSelectedMachine] = useState(null);
+  const [editingMachine, setEditingMachine] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
   
   const latestAlerts = [...alerts].sort(
@@ -120,11 +122,22 @@ function App() {
       return (
         <div className="page-stack">
           <CreateMachineForm onMachineCreated={fetchData} />
-          <MachinesTable
-          machines={machines}
-          onSelectMachine={setSelectedMachine}
-          onMachineDeleted={fetchData}
-        />
+          <>
+            <MachinesTable
+              machines={machines}
+              onSelectMachine={setSelectedMachine}
+              onMachineDeleted={fetchData}
+              onEditMachine={setEditingMachine}
+            />
+
+            {editingMachine && (
+              <EditMachineModal
+                machine={editingMachine}
+                onClose={() => setEditingMachine(null)}
+                onMachineUpdated={fetchData}
+              />
+            )}
+          </>
         </div>
       );
     }

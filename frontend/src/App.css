@@ -672,3 +672,28 @@ tbody tr:hover {
   background: var(--red);
   color: white;
 }
+.table-controls {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.table-controls input,
+.table-controls select {
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 0 14px;
+  background: white;
+  font-size: 14px;
+}
+
+.table-controls input {
+  flex: 1;
+}
+
+.table-controls input:focus,
+.table-controls select:focus {
+  outline: none;
+  border-color: var(--blue);
+}

@@ -1,13 +1,21 @@
+import { useMemo, useState } from "react";
 import axios from "axios";
 
 const API_URL = "http://localhost:8080/api";
 
-function MachinesTable({ machines, onSelectMachine, onMachineDeleted }) {
+function MachinesTable({
+  machines,
+  onSelectMachine,
+  onMachineDeleted,
+}) {
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("ALL");
+
   async function handleDelete(event, machineId) {
     event.stopPropagation();
 
     const confirmed = window.confirm(
-      "Are you sure you want to delete this machine? This will also delete its sensors, readings and alerts."
+      "Are you sure you want to delete this machine?"
     );
 
     if (!confirmed) return;
@@ -17,6 +25,19 @@ function MachinesTable({ machines, onSelectMachine, onMachineDeleted }) {
     onMachineDeleted();
   }
 
+  const filteredMachines = useMemo(() => {
+    return machines.filter((machine) => {
+      const matchesSearch =
+        machine.name.toLowerCase().includes(search.toLowerCase()) ||
+        machine.location.toLowerCase().includes(search.toLowerCase());
+
+      const matchesStatus =
+        statusFilter === "ALL" || machine.status === statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [machines, search, statusFilter]);
+
   return (
     <section className="panel">
       <div className="panel-header">
@@ -24,6 +45,25 @@ function MachinesTable({ machines, onSelectMachine, onMachineDeleted }) {
           <h2>Machine Fleet</h2>
           <p>Current status of registered industrial machines</p>
         </div>
+      </div>
+
+      <div className="table-controls">
+        <input
+          type="text"
+          placeholder="Search machine or location..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="ALL">All Status</option>
+          <option value="ONLINE">ONLINE</option>
+          <option value="WARNING">WARNING</option>
+          <option value="OFFLINE">OFFLINE</option>
+        </select>
       </div>
 
       <div className="table-wrapper">
@@ -39,7 +79,7 @@ function MachinesTable({ machines, onSelectMachine, onMachineDeleted }) {
           </thead>
 
           <tbody>
-            {machines.map((machine) => (
+            {filteredMachines.map((machine) => (
               <tr
                 key={machine.id}
                 className="clickable-row"
@@ -48,17 +88,23 @@ function MachinesTable({ machines, onSelectMachine, onMachineDeleted }) {
                 <td>
                   <strong>{machine.name}</strong>
                 </td>
+
                 <td>{machine.type}</td>
+
                 <td>
                   <span className={`status ${machine.status.toLowerCase()}`}>
                     {machine.status}
                   </span>
                 </td>
+
                 <td>{machine.location}</td>
+
                 <td>
                   <button
                     className="delete-button"
-                    onClick={(event) => handleDelete(event, machine.id)}
+                    onClick={(event) =>
+                      handleDelete(event, machine.id)
+                    }
                   >
                     Delete
                   </button>

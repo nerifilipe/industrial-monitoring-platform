@@ -29,4 +29,16 @@ public class SensorService {
     public void deleteSensor(Long id) {
         sensorRepository.deleteById(id);
     }
+    public Sensor updateSensor(Long id, Sensor updatedSensor) {
+        Sensor sensor = sensorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sensor not found"));
+
+        sensor.setName(updatedSensor.getName());
+        sensor.setType(updatedSensor.getType());
+        sensor.setUnit(updatedSensor.getUnit());
+        sensor.setStatus(updatedSensor.getStatus());
+        sensor.setMachine(updatedSensor.getMachine());
+
+        return sensorRepository.save(sensor);
+    }
 }

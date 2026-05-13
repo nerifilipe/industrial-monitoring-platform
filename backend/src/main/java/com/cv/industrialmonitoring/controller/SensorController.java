@@ -33,4 +33,11 @@ public class SensorController {
     public void deleteSensor(@PathVariable Long id) {
         sensorService.deleteSensor(id);
     }
+    @PutMapping("/api/sensors/{id}")
+    public Sensor updateSensor(
+            @PathVariable Long id,
+            @RequestBody Sensor sensor
+    ) {
+        return sensorService.updateSensor(id, sensor);
+    }
 }

@@ -3,7 +3,11 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/api";
 
-function SensorsTable({ sensors, onSensorDeleted }) {
+function SensorsTable({
+  sensors,
+  onSensorDeleted,
+  onEditSensor,
+}) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
 
@@ -82,7 +86,6 @@ function SensorsTable({ sensors, onSensorDeleted }) {
                 </td>
 
                 <td>{sensor.type}</td>
-
                 <td>{sensor.unit}</td>
 
                 <td>
@@ -94,12 +97,21 @@ function SensorsTable({ sensors, onSensorDeleted }) {
                 <td>{sensor.machine?.name}</td>
 
                 <td>
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDelete(sensor.id)}
-                  >
-                    Delete
-                  </button>
+                  <div className="action-buttons">
+                    <button
+                      className="edit-button"
+                      onClick={() => onEditSensor(sensor)}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDelete(sensor.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

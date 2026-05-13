@@ -10,6 +10,7 @@ import SensorsTable from "./components/SensorsTable";
 import ReadingsTable from "./components/ReadingsTable";
 import MachineDetail from "./components/MachineDetail";
 import EditMachineModal from "./components/EditMachineModal";
+import EditSensorModal from "./components/EditSensorModal";
 import "./App.css";
 
 const API_URL = "http://localhost:8080/api";
@@ -23,6 +24,7 @@ function App() {
   const [sensors, setSensors] = useState([]);
   const [selectedMachine, setSelectedMachine] = useState(null);
   const [editingMachine, setEditingMachine] = useState(null);
+  const [editingSensor, setEditingSensor] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
   
   const latestAlerts = [...alerts].sort(
@@ -150,10 +152,22 @@ function App() {
             onSensorCreated={fetchData}
           />
 
-          <SensorsTable
-            sensors={sensors}
-            onSensorDeleted={fetchData}
-          />
+          <>
+            <SensorsTable
+              sensors={sensors}
+              onSensorDeleted={fetchData}
+              onEditSensor={setEditingSensor}
+            />
+
+            {editingSensor && (
+              <EditSensorModal
+                sensor={editingSensor}
+                machines={machines}
+                onClose={() => setEditingSensor(null)}
+                onSensorUpdated={fetchData}
+              />
+            )}
+          </>
         </div>
       );
     }

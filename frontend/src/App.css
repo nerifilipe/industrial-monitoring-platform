@@ -697,3 +697,13 @@ tbody tr:hover {
   outline: none;
   border-color: var(--blue);
 }
+
+.status.active {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.status.inactive {
+  background: var(--red-soft);
+  color: var(--red);
+}

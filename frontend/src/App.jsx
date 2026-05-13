@@ -121,9 +121,10 @@ function App() {
         <div className="page-stack">
           <CreateMachineForm onMachineCreated={fetchData} />
           <MachinesTable
-            machines={machines}
-            onSelectMachine={setSelectedMachine}
-          />
+          machines={machines}
+          onSelectMachine={setSelectedMachine}
+          onMachineDeleted={fetchData}
+        />
         </div>
       );
     }

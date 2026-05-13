@@ -657,3 +657,18 @@ tbody tr:hover {
 .detail-grid strong {
   font-size: 18px;
 }
+
+.delete-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--red-soft);
+  color: var(--red);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background: var(--red);
+  color: white;
+}

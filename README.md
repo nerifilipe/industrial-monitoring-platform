@@ -1,120 +1,225 @@
 # Industrial Monitoring Platform
 
-A full-stack industrial monitoring dashboard built with Spring Boot, PostgreSQL and React.
+A full-stack industrial monitoring platform built with **Spring Boot**, **PostgreSQL**, **Docker** and **React**.
 
-This platform simulates a real-world factory monitoring environment where machines, sensors, telemetry readings and alerts are managed in real time.
-
----
-
-# Features
-
-## Backend
-- Spring Boot REST API
-- PostgreSQL database
-- JPA / Hibernate
-- Entity relationships
-- Cascade delete handling
-- Automatic sensor reading generation
-- Alert engine
-- CRUD operations
-- Validation handling
-
-## Frontend
-- React + Vite
-- Modern dashboard UI
-- Multi-page navigation
-- Machine detail views
-- Live telemetry charts
-- Real-time auto-refresh
-- Search and filtering
-- CRUD modals
-- Alert resolution workflow
+This project simulates a real-world factory monitoring system where industrial machines, sensors, telemetry readings and alerts are managed through a modern dashboard.
 
 ---
 
-# Tech Stack
+## Overview
 
-## Backend
+The goal of this project is to demonstrate a complete full-stack application with:
+
+- backend architecture
+- REST APIs
+- database relationships
+- authentication
+- real-time-like monitoring
+- dashboard UI
+- Dockerized environment
+
+The platform includes automatic sensor reading generation, alert detection, alert resolution, CRUD operations and JWT-based authentication.
+
+---
+
+## Tech Stack
+
+### Backend
+
 - Java 25
 - Spring Boot
 - Spring Data JPA
 - Hibernate
 - PostgreSQL
+- Spring Security
+- JWT Authentication
+- BCrypt password hashing
 - Maven
+- Docker
 
-## Frontend
+### Frontend
+
 - React
 - Vite
 - Axios
 - Recharts
+- CSS
+- Docker
+
+### Database
+
+- PostgreSQL
 
 ---
 
-# System Architecture
+## Features
 
-```text
+### Authentication
+
+- Login system
+- JWT token generation
+- Protected API endpoints
+- Token persistence in frontend
+- Logout
+- BCrypt password hashing
+- Demo admin user created automatically
+
+Demo credentials:
+
+```txt
+username: admin
+password: admin123
+```
+
+---
+
+### Dashboard
+
+- Overview page
+- Statistics cards
+- Live system status
+- Latest sensor readings chart
+- Active alerts panel
+- Auto-refresh every 5 seconds
+
+---
+
+### Machines
+
+- Create machines
+- View machine list
+- Edit machines
+- Delete machines
+- Search machines
+- Filter by status
+- Machine detail page
+- Linked sensors per machine
+
+Machine statuses:
+
+```txt
+ONLINE
+WARNING
+OFFLINE
+```
+
+---
+
+### Sensors
+
+- Create sensors
+- View sensor inventory
+- Edit sensors
+- Delete sensors
+- Search sensors
+- Filter by status
+- Link sensors to machines
+
+Sensor statuses:
+
+```txt
+ACTIVE
+INACTIVE
+```
+
+---
+
+### Readings
+
+- Automatic reading generation
+- Historical telemetry storage
+- Readings chart
+- Paginated readings table
+
+---
+
+### Alerts
+
+- Automatic alert generation based on sensor thresholds
+- Prevent duplicate active alerts
+- Resolve alerts manually
+- Active alerts page
+- Alert counter
+
+---
+
+## System Architecture
+
+```txt
 Machine
  └── Sensors
       ├── Sensor Readings
       └── Alerts
 ```
 
----
+Main backend flow:
 
-# Main Functionalities
+```txt
+Controller -> Service -> Repository -> PostgreSQL
+```
 
-## Machines
-- Create machine
-- Edit machine
-- Delete machine
-- Machine detail page
-- Search and filter
+Main frontend flow:
 
-## Sensors
-- Create sensor
-- Edit sensor
-- Delete sensor
-- Search and filter
-
-## Alerts
-- Automatic alert generation
-- Severity handling
-- Resolve alerts
-
-## Readings
-- Automatic telemetry generation
-- Real-time chart updates
-- Historical reading storage
+```txt
+React Components -> Axios API Calls -> Spring Boot API
+```
 
 ---
 
-# Backend Setup
+## Docker Setup
 
-## Requirements
-- Java 25
-- PostgreSQL
-- Maven
+The project is fully Dockerized.
 
-## Database
+### Run the full application
 
-Create database:
-
-```sql
-CREATE DATABASE industrial_monitoring;
+```bash
+docker compose up --build
 ```
 
-## Configure application.properties
+This starts:
 
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/industrial_monitoring
-spring.datasource.username=YOUR_USERNAME
-spring.datasource.password=YOUR_PASSWORD
+| Service | URL |
+|---|---|
+| Frontend | http://localhost:5173 |
+| Backend | http://localhost:8080 |
+| PostgreSQL | localhost:5432 |
 
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
+---
+
+### Stop containers
+
+```bash
+docker compose down
 ```
 
-## Run Backend
+---
+
+### Reset database data
+
+```bash
+docker compose down -v
+```
+
+Then run again:
+
+```bash
+docker compose up --build
+```
+
+The demo admin user will be recreated automatically.
+
+---
+
+## Manual Backend Setup
+
+If running without Docker:
+
+```bash
+cd backend
+./mvnw spring-boot:run
+```
+
+On Windows:
 
 ```powershell
 cd backend
@@ -123,99 +228,161 @@ cd backend
 
 Backend runs on:
 
-```text
+```txt
 http://localhost:8080
 ```
 
 ---
 
-# Frontend Setup
+## Manual Frontend Setup
 
-## Install dependencies
-
-```powershell
+```bash
 cd frontend
 npm install
-```
-
-## Run frontend
-
-```powershell
 npm run dev
 ```
 
 Frontend runs on:
 
-```text
+```txt
 http://localhost:5173
 ```
 
 ---
 
-# API Endpoints
+## API Endpoints
 
-## Machines
+### Authentication
 
-```text
+```txt
+POST /api/auth/register
+POST /api/auth/login
+```
+
+---
+
+### Dashboard
+
+```txt
+GET /api/dashboard
+```
+
+---
+
+### Machines
+
+```txt
 GET    /api/machines
 POST   /api/machines
 PUT    /api/machines/{id}
 DELETE /api/machines/{id}
 ```
 
-## Sensors
+---
 
-```text
+### Sensors
+
+```txt
 GET    /api/sensors
 POST   /api/sensors
 PUT    /api/sensors/{id}
 DELETE /api/sensors/{id}
 ```
 
-## Alerts
+---
 
-```text
+### Readings
+
+```txt
+GET /api/readings
+GET /api/sensors/{sensorId}/readings
+```
+
+---
+
+### Alerts
+
+```txt
 GET /api/alerts
 PUT /api/alerts/{id}/resolve
 ```
 
-## Dashboard
-
-```text
-GET /api/dashboard
-```
-
 ---
 
-# Screenshots
+## Screenshots
 
-## Dashboard
+### Dashboard
 
 ![Dashboard](screenshots/dashboard.png)
 
-## Machines
+### Machines
 
 ![Machines](screenshots/machines.png)
 
-## Sensors
+### Sensors
 
 ![Sensors](screenshots/sensors.png)
+
 ---
 
-# Future Improvements
+## What I Learned
 
-- JWT Authentication
-- Role-based access
+This project helped me practice and understand:
+
+- Spring Boot architecture
+- REST API development
+- PostgreSQL integration
+- JPA/Hibernate relationships
+- Cascade delete
+- DTO usage
+- Validation
+- Exception handling
+- JWT authentication
+- BCrypt password hashing
+- React component architecture
+- API integration with Axios
+- Dashboard UI design
+- Docker and docker-compose
+- Full-stack project organization
+
+---
+
+## Future Improvements
+
+Possible next improvements:
+
 - WebSocket real-time updates
-- Docker deployment
-- Kubernetes deployment
-- Export reports
-- Notification system
-- Dark mode
+- Deployment to cloud
+- Role-based access control
+- Admin/user permissions
+- Export readings to CSV
+- Dark/light mode toggle
 - Advanced analytics
+- Email or notification alerts
+- Unit and integration tests
+- CI/CD pipeline
 
 ---
 
-# Author
+## Project Status
 
-Filipe Néri
+The project is currently fully functional locally with Docker.
+
+Current version includes:
+
+- Dockerized frontend
+- Dockerized backend
+- Dockerized PostgreSQL
+- JWT authentication
+- CRUD for machines and sensors
+- Alert system
+- Sensor simulator
+- Dashboard UI
+
+---
+
+## Author
+
+**Filipe Néri**
+
+Student project focused on full-stack development, industrial monitoring and backend architecture.

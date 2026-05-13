@@ -25,4 +25,8 @@ public class MachineController {
     public Machine createMachine(@Valid @RequestBody Machine machine) {
         return machineService.createMachine(machine);
     }
+    @DeleteMapping("/api/machines/{id}")
+    public void deleteMachine(@PathVariable Long id) {
+        machineService.deleteMachine(id);
+    }
 }

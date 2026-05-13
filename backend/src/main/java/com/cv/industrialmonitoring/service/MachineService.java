@@ -22,4 +22,7 @@ public class MachineService {
     public Machine createMachine(Machine machine) {
         return machineRepository.save(machine);
     }
+    public void deleteMachine(Long id) {
+        machineRepository.deleteById(id);
+    }
 }

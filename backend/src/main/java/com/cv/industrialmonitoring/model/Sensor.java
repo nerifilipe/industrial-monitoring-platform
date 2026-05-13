@@ -1,4 +1,5 @@
 package com.cv.industrialmonitoring.model;
+import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -17,6 +18,10 @@ public class Sensor {
     @ManyToOne
     @JoinColumn(name = "machine_id")
     private Machine machine;
+    @OneToMany(mappedBy = "sensor", cascade = CascadeType.ALL)
+    private List<Alert> alerts;
+    @OneToMany(mappedBy = "sensor", cascade = CascadeType.ALL)
+    private List<SensorReading> readings;
 
     public Sensor() {
     }

@@ -5,6 +5,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
 
 @Entity
 public class Machine {
@@ -24,6 +28,9 @@ public class Machine {
 
     @NotBlank(message = "Machine location is required")
     private String location;
+
+    @OneToMany(mappedBy = "machine", cascade = CascadeType.ALL)
+    private List<Sensor> sensors;
 
     public Machine() {
     }

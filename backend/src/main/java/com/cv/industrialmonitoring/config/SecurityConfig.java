@@ -52,7 +52,7 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "https://industrial-monitoring-platform-fn.vercel.app"
+                "https://industrial-monitoring-platform.vercel.app"
         ));
 
         configuration.setAllowedMethods(List.of(

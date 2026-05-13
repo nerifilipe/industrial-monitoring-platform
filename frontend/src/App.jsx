@@ -8,6 +8,7 @@ import CreateMachineForm from "./components/CreateMachineForm";
 import CreateSensorForm from "./components/CreateSensorForm";
 import SensorsTable from "./components/SensorsTable";
 import ReadingsTable from "./components/ReadingsTable";
+import MachineDetail from "./components/MachineDetail";
 import "./App.css";
 
 const API_URL = "http://localhost:8080/api";
@@ -19,6 +20,7 @@ function App() {
   const [readings, setReadings] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [sensors, setSensors] = useState([]);
+  const [selectedMachine, setSelectedMachine] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
   
   const latestAlerts = [...alerts].sort(
@@ -105,10 +107,23 @@ function App() {
     }
 
     if (activePage === "machines") {
+      if (selectedMachine) {
+        return (
+          <MachineDetail
+            machine={selectedMachine}
+            sensors={sensors}
+            onBack={() => setSelectedMachine(null)}
+          />
+        );
+      }
+
       return (
         <div className="page-stack">
           <CreateMachineForm onMachineCreated={fetchData} />
-          <MachinesTable machines={machines} />
+          <MachinesTable
+            machines={machines}
+            onSelectMachine={setSelectedMachine}
+          />
         </div>
       );
     }
@@ -169,12 +184,15 @@ function App() {
         <nav>
           {["overview", "machines", "sensors", "readings", "alerts"].map((page) => (
             <button
-              key={page}
-              className={activePage === page ? "active" : ""}
-              onClick={() => setActivePage(page)}
-            >
-              {page.charAt(0).toUpperCase() + page.slice(1)}
-            </button>
+            key={page}
+            className={activePage === page ? "active" : ""}
+            onClick={() => {
+              setActivePage(page);
+              setSelectedMachine(null);
+            }}
+          >
+            {page.charAt(0).toUpperCase() + page.slice(1)}
+          </button>
           ))}
         </nav>
       </aside>

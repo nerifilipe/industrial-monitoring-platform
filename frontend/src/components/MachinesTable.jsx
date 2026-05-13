@@ -1,4 +1,4 @@
-function MachinesTable({ machines }) {
+function MachinesTable({ machines, onSelectMachine }) {
   return (
     <section className="panel">
       <div className="panel-header">
@@ -21,7 +21,11 @@ function MachinesTable({ machines }) {
 
           <tbody>
             {machines.map((machine) => (
-              <tr key={machine.id}>
+              <tr
+                key={machine.id}
+                className="clickable-row"
+                onClick={() => onSelectMachine(machine)}
+              >
                 <td>
                   <strong>{machine.name}</strong>
                 </td>

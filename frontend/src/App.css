@@ -587,3 +587,73 @@ tbody tr:hover {
   min-height: 46px;
   white-space: nowrap;
 }
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background: var(--blue-soft);
+}
+
+.detail-hero {
+  padding: 28px;
+}
+
+.back-button {
+  border: none;
+  background: var(--surface-soft);
+  color: var(--blue);
+  font-weight: 800;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 22px;
+}
+
+.back-button:hover {
+  background: var(--blue-soft);
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 26px;
+}
+
+.detail-header h2 {
+  margin: 0;
+  font-size: 34px;
+}
+
+.detail-header p {
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.detail-grid div {
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  padding: 18px;
+  border-radius: 16px;
+}
+
+.detail-grid span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.detail-grid strong {
+  font-size: 18px;
+}

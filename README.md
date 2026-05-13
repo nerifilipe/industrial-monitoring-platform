@@ -190,14 +190,16 @@ GET /api/dashboard
 # Screenshots
 
 ## Dashboard
-(Add screenshot here)
+
+![Dashboard](screenshots/dashboard.png)
 
 ## Machines
-(Add screenshot here)
+
+![Machines](screenshots/machines.png)
 
 ## Sensors
-(Add screenshot here)
 
+![Sensors](screenshots/sensors.png)
 ---
 
 # Future Improvements

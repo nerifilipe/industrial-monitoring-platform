@@ -5,7 +5,6 @@ import com.cv.industrialmonitoring.dto.AuthResponse;
 import com.cv.industrialmonitoring.model.User;
 import com.cv.industrialmonitoring.service.AuthService;
 import org.springframework.web.bind.annotation.*;
-import com.cv.industrialmonitoring.dto.AuthResponse;
 
 @RestController
 @RequestMapping("/api/auth")

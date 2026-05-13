@@ -6,7 +6,7 @@ The application simulates a real-world industrial monitoring environment where m
 
 ---
 
-# Live Demo
+## Live Demo
 
 Frontend:
 
@@ -25,7 +25,7 @@ password: admin123
 
 ---
 
-# Overview
+## Overview
 
 This project demonstrates:
 
@@ -43,9 +43,9 @@ The platform includes automatic sensor reading generation, alert creation and mo
 
 ---
 
-# Tech Stack
+## Tech Stack
 
-## Backend
+### Backend
 
 - Java 25
 - Spring Boot
@@ -53,12 +53,12 @@ The platform includes automatic sensor reading generation, alert creation and mo
 - Spring Data JPA
 - Hibernate
 - JWT Authentication
-- BCrypt Password Hashing
+- BCrypt password hashing
 - PostgreSQL
 - Maven
 - Docker
 
-## Frontend
+### Frontend
 
 - React
 - Vite
@@ -67,22 +67,22 @@ The platform includes automatic sensor reading generation, alert creation and mo
 - CSS
 - Docker
 
-## Database
+### Database
 
 - PostgreSQL
-- Neon (Production)
+- Neon PostgreSQL for production
 
-## Deployment
+### Deployment
 
-- Vercel (Frontend)
-- Render (Backend)
-- Neon PostgreSQL (Database)
+- Vercel for frontend
+- Render for backend
+- Neon PostgreSQL for production database
 
 ---
 
-# Features
+## Features
 
-## Authentication
+### Authentication
 
 - JWT login system
 - Protected API endpoints
@@ -91,9 +91,7 @@ The platform includes automatic sensor reading generation, alert creation and mo
 - BCrypt password hashing
 - Automatic demo admin creation
 
----
-
-## Dashboard
+### Dashboard
 
 - Operations overview
 - Statistics cards
@@ -102,9 +100,7 @@ The platform includes automatic sensor reading generation, alert creation and mo
 - Active alerts panel
 - Automatic refresh every 5 seconds
 
----
-
-## Machines
+### Machines
 
 - Create machines
 - Edit machines
@@ -122,9 +118,7 @@ WARNING
 OFFLINE
 ```
 
----
-
-## Sensors
+### Sensors
 
 - Create sensors
 - Edit sensors
@@ -140,18 +134,14 @@ ACTIVE
 INACTIVE
 ```
 
----
-
-## Readings
+### Readings
 
 - Automatic telemetry generation
 - Historical readings storage
 - Readings chart
 - Paginated readings table
 
----
-
-## Alerts
+### Alerts
 
 - Automatic alert generation
 - Threshold-based monitoring
@@ -161,7 +151,7 @@ INACTIVE
 
 ---
 
-# System Architecture
+## System Architecture
 
 ```txt
 Machine
@@ -204,11 +194,11 @@ Neon PostgreSQL
 
 ---
 
-# Docker Setup
+## Docker Setup
 
 The application is fully Dockerized.
 
-## Run the full application
+### Run the full application
 
 ```bash
 docker compose up --build
@@ -222,27 +212,23 @@ Services:
 | Backend | http://localhost:8080 |
 | PostgreSQL | localhost:5432 |
 
----
-
-## Stop containers
+### Stop containers
 
 ```bash
 docker compose down
 ```
 
----
-
-## Reset database data
+### Reset database data
 
 ```bash
 docker compose down -v
 ```
 
+The demo admin user is recreated automatically when the backend starts.
+
 ---
 
-# Manual Backend Setup
-
-## Run backend
+## Manual Backend Setup
 
 ```bash
 cd backend
@@ -264,9 +250,7 @@ http://localhost:8080
 
 ---
 
-# Manual Frontend Setup
-
-## Run frontend
+## Manual Frontend Setup
 
 ```bash
 cd frontend
@@ -280,28 +264,49 @@ Frontend URL:
 http://localhost:5173
 ```
 
+For manual local frontend runs, create a `.env` file inside `frontend`:
+
+```env
+VITE_API_URL=http://localhost:8080/api
+```
+
 ---
 
-# API Endpoints
+## Environment Variables
 
-## Authentication
+### Backend
+
+| Variable | Description |
+|---|---|
+| `SPRING_DATASOURCE_URL` | PostgreSQL JDBC URL |
+| `SPRING_DATASOURCE_USERNAME` | PostgreSQL username |
+| `SPRING_DATASOURCE_PASSWORD` | PostgreSQL password |
+| `JWT_SECRET` | Secret used to sign JWT tokens |
+
+### Frontend
+
+| Variable | Description |
+|---|---|
+| `VITE_API_URL` | Backend API URL |
+
+---
+
+## API Endpoints
+
+### Authentication
 
 ```txt
 POST /api/auth/register
 POST /api/auth/login
 ```
 
----
-
-## Dashboard
+### Dashboard
 
 ```txt
 GET /api/dashboard
 ```
 
----
-
-## Machines
+### Machines
 
 ```txt
 GET    /api/machines
@@ -310,9 +315,7 @@ PUT    /api/machines/{id}
 DELETE /api/machines/{id}
 ```
 
----
-
-## Sensors
+### Sensors
 
 ```txt
 GET    /api/sensors
@@ -321,18 +324,14 @@ PUT    /api/sensors/{id}
 DELETE /api/sensors/{id}
 ```
 
----
-
-## Readings
+### Readings
 
 ```txt
 GET /api/readings
 GET /api/sensors/{sensorId}/readings
 ```
 
----
-
-## Alerts
+### Alerts
 
 ```txt
 GET /api/alerts
@@ -341,23 +340,23 @@ PUT /api/alerts/{id}/resolve
 
 ---
 
-# Screenshots
+## Screenshots
 
-## Dashboard
+### Dashboard
 
 ![Dashboard](screenshots/dashboard.png)
 
-## Machines
+### Machines
 
 ![Machines](screenshots/machines.png)
 
-## Sensors
+### Sensors
 
 ![Sensors](screenshots/sensors.png)
 
 ---
 
-# What I Learned
+## What I Learned
 
 This project helped me practice and improve:
 
@@ -380,7 +379,7 @@ This project helped me practice and improve:
 
 ---
 
-# Future Improvements
+## Future Improvements
 
 Possible future upgrades:
 
@@ -396,7 +395,7 @@ Possible future upgrades:
 
 ---
 
-# Project Status
+## Project Status
 
 Current version includes:
 
@@ -412,8 +411,8 @@ Current version includes:
 
 ---
 
-# Author
+## Author
 
-**Filipe Néri**
+**Filipe Vale**
 
 Full-stack project focused on industrial monitoring systems, backend architecture and modern web development.

@@ -3,6 +3,7 @@ package com.cv.industrialmonitoring.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -10,17 +11,17 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY =
-            "my-super-secret-key-for-industrial-monitoring-platform-123456";
-
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
+
+    @Value("${app.jwt.secret}")
+    private String secretKey;
 
     public String generateToken(String username) {
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
+                .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .compact();
     }
 
@@ -36,7 +37,7 @@ public class JwtService {
 
     private Claims extractClaims(String token) {
         return Jwts.parser()
-                .verifyWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
+                .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

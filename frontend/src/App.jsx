@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+
 import StatsCard from "./components/StatsCard";
 import ReadingsChart from "./components/ReadingsChart";
 import MachinesTable from "./components/MachinesTable";
@@ -11,35 +12,59 @@ import ReadingsTable from "./components/ReadingsTable";
 import MachineDetail from "./components/MachineDetail";
 import EditMachineModal from "./components/EditMachineModal";
 import EditSensorModal from "./components/EditSensorModal";
+import LoginPage from "./components/LoginPage";
+
 import "./App.css";
 
 const API_URL = "http://localhost:8080/api";
 
 function App() {
+  const [token, setToken] = useState(
+    localStorage.getItem("token")
+  );
+
   const [activePage, setActivePage] = useState("overview");
+
   const [stats, setStats] = useState(null);
   const [machines, setMachines] = useState([]);
   const [readings, setReadings] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [sensors, setSensors] = useState([]);
+
   const [selectedMachine, setSelectedMachine] = useState(null);
-  const [editingMachine, setEditingMachine] = useState(null);
-  const [editingSensor, setEditingSensor] = useState(null);
-  const [lastUpdated, setLastUpdated] = useState(null);
-  
-  const latestAlerts = [...alerts].sort(
-  (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-);
+
+  const [editingMachine, setEditingMachine] =
+    useState(null);
+
+  const [editingSensor, setEditingSensor] =
+    useState(null);
+
+  const [lastUpdated, setLastUpdated] =
+    useState(null);
 
   useEffect(() => {
+    if (!token) return;
+
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${token}`;
+
     fetchData();
+
     const interval = setInterval(fetchData, 5000);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [token]);
 
   async function fetchData() {
-    const [statsRes, machinesRes, readingsRes, alertsRes, sensorsRes] =
-      await Promise.all([
+    try {
+      const [
+        statsRes,
+        machinesRes,
+        readingsRes,
+        alertsRes,
+        sensorsRes,
+      ] = await Promise.all([
         axios.get(`${API_URL}/dashboard`),
         axios.get(`${API_URL}/machines`),
         axios.get(`${API_URL}/readings`),
@@ -47,28 +72,78 @@ function App() {
         axios.get(`${API_URL}/sensors`),
       ]);
 
-    setStats(statsRes.data);
-    setMachines(machinesRes.data);
-    setReadings(readingsRes.data);
-    setAlerts(alertsRes.data);
-    console.log("Alerts from API:", alertsRes.data);
-    setSensors(sensorsRes.data);
-    setLastUpdated(new Date().toLocaleTimeString());
+      setStats(statsRes.data);
+      setMachines(machinesRes.data);
+      setReadings(readingsRes.data);
+      setAlerts(alertsRes.data);
+      setSensors(sensorsRes.data);
+
+      setLastUpdated(
+        new Date().toLocaleTimeString()
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  if (!token) {
+    return <LoginPage onLogin={setToken} />;
+  }
+
+  const latestAlerts = [...alerts].sort(
+    (a, b) =>
+      new Date(b.timestamp) -
+      new Date(a.timestamp)
+  );
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+
+    delete axios.defaults.headers.common[
+      "Authorization"
+    ];
+
+    setToken(null);
+    setStats(null);
   }
 
   function renderPage() {
     if (!stats) {
-      return <div className="loading-card">Loading dashboard data...</div>;
+      return (
+        <div className="loading-card">
+          Loading dashboard data...
+        </div>
+      );
     }
 
     if (activePage === "overview") {
       return (
         <>
           <section className="stats-grid">
-            <StatsCard label="Machines" value={stats.totalMachines} helper="registered assets" />
-            <StatsCard label="Active Sensors" value={stats.activeSensors} helper="currently reporting" />
-            <StatsCard label="Readings" value={stats.totalReadings} helper="stored measurements" />
-            <StatsCard label="Offline" value={stats.offlineMachines} helper="requires attention" danger />
+            <StatsCard
+              label="Machines"
+              value={stats.totalMachines}
+              helper="registered assets"
+            />
+
+            <StatsCard
+              label="Active Sensors"
+              value={stats.activeSensors}
+              helper="currently reporting"
+            />
+
+            <StatsCard
+              label="Readings"
+              value={stats.totalReadings}
+              helper="stored measurements"
+            />
+
+            <StatsCard
+              label="Offline"
+              value={stats.offlineMachines}
+              helper="requires attention"
+              danger
+            />
           </section>
 
           <section className="dashboard-grid">
@@ -76,32 +151,46 @@ function App() {
 
             <div className="right-column">
               <AlertsPanel
-              alerts={latestAlerts.slice(0, 5)}
-              onAlertResolved={fetchData}
-            />
+                alerts={latestAlerts.slice(0, 5)}
+                onAlertResolved={fetchData}
+              />
 
               <section className="insight-card">
                 <h2>System Health</h2>
 
                 <div className="health-row">
                   <span>Operational status</span>
-                  <strong className="success">Stable</strong>
+
+                  <strong className="success">
+                    Stable
+                  </strong>
                 </div>
 
                 <div className="health-row">
                   <span>Data refresh</span>
+
                   <strong>5s interval</strong>
                 </div>
 
                 <div className="health-row">
                   <span>Offline machines</span>
-                  <strong className={stats.offlineMachines > 0 ? "danger-text" : "success"}>
+
+                  <strong
+                    className={
+                      stats.offlineMachines > 0
+                        ? "danger-text"
+                        : "success"
+                    }
+                  >
                     {stats.offlineMachines}
                   </strong>
                 </div>
 
                 <p className="insight-note">
-                  Sensor readings are automatically generated by the backend simulator and persisted in PostgreSQL.
+                  Sensor readings are
+                  automatically generated by
+                  the backend simulator and
+                  persisted in PostgreSQL.
                 </p>
               </section>
             </div>
@@ -116,30 +205,39 @@ function App() {
           <MachineDetail
             machine={selectedMachine}
             sensors={sensors}
-            onBack={() => setSelectedMachine(null)}
+            onBack={() =>
+              setSelectedMachine(null)
+            }
           />
         );
       }
 
       return (
         <div className="page-stack">
-          <CreateMachineForm onMachineCreated={fetchData} />
-          <>
-            <MachinesTable
-              machines={machines}
-              onSelectMachine={setSelectedMachine}
-              onMachineDeleted={fetchData}
-              onEditMachine={setEditingMachine}
-            />
+          <CreateMachineForm
+            onMachineCreated={fetchData}
+          />
 
-            {editingMachine && (
-              <EditMachineModal
-                machine={editingMachine}
-                onClose={() => setEditingMachine(null)}
-                onMachineUpdated={fetchData}
-              />
-            )}
-          </>
+          <MachinesTable
+            machines={machines}
+            onSelectMachine={
+              setSelectedMachine
+            }
+            onMachineDeleted={fetchData}
+            onEditMachine={
+              setEditingMachine
+            }
+          />
+
+          {editingMachine && (
+            <EditMachineModal
+              machine={editingMachine}
+              onClose={() =>
+                setEditingMachine(null)
+              }
+              onMachineUpdated={fetchData}
+            />
+          )}
         </div>
       );
     }
@@ -152,37 +250,48 @@ function App() {
             onSensorCreated={fetchData}
           />
 
-          <>
-            <SensorsTable
-              sensors={sensors}
-              onSensorDeleted={fetchData}
-              onEditSensor={setEditingSensor}
-            />
+          <SensorsTable
+            sensors={sensors}
+            onSensorDeleted={fetchData}
+            onEditSensor={
+              setEditingSensor
+            }
+          />
 
-            {editingSensor && (
-              <EditSensorModal
-                sensor={editingSensor}
-                machines={machines}
-                onClose={() => setEditingSensor(null)}
-                onSensorUpdated={fetchData}
-              />
-            )}
-          </>
+          {editingSensor && (
+            <EditSensorModal
+              sensor={editingSensor}
+              machines={machines}
+              onClose={() =>
+                setEditingSensor(null)
+              }
+              onSensorUpdated={fetchData}
+            />
+          )}
         </div>
       );
     }
 
-   if (activePage === "readings") {
+    if (activePage === "readings") {
       return (
         <>
           <ReadingsChart readings={readings} />
-          <ReadingsTable readings={readings} />
+
+          <ReadingsTable
+            readings={readings}
+          />
         </>
       );
     }
+
     if (activePage === "alerts") {
-  return <AlertsPanel alerts={latestAlerts} onAlertResolved={fetchData} />;
-}
+      return (
+        <AlertsPanel
+          alerts={latestAlerts}
+          onAlertResolved={fetchData}
+        />
+      );
+    }
   }
 
   const pageTitles = {
@@ -194,18 +303,30 @@ function App() {
   };
 
   const pageSubtitles = {
-    overview: "Monitor machine health, sensor activity and live industrial readings.",
-    machines: "Create, view and manage industrial machines.",
-    sensors: "Register and monitor sensors linked to machines.",
-    readings: "Visualize telemetry generated by the sensor simulator.",
-    alerts: "Review warnings generated by threshold-based monitoring.",
+    overview:
+      "Monitor machine health, sensor activity and live industrial readings.",
+
+    machines:
+      "Create, view and manage industrial machines.",
+
+    sensors:
+      "Register and monitor sensors linked to machines.",
+
+    readings:
+      "Visualize telemetry generated by the sensor simulator.",
+
+    alerts:
+      "Review warnings generated by threshold-based monitoring.",
   };
 
   return (
     <div className="app-shell">
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-icon">IM</div>
+          <div className="brand-icon">
+            IM
+          </div>
+
           <div>
             <strong>Industrial</strong>
             <span>Monitoring</span>
@@ -213,34 +334,70 @@ function App() {
         </div>
 
         <nav>
-          {["overview", "machines", "sensors", "readings", "alerts"].map((page) => (
+          {[
+            "overview",
+            "machines",
+            "sensors",
+            "readings",
+            "alerts",
+          ].map((page) => (
             <button
-            key={page}
-            className={activePage === page ? "active" : ""}
-            onClick={() => {
-              setActivePage(page);
-              setSelectedMachine(null);
-            }}
-          >
-            {page.charAt(0).toUpperCase() + page.slice(1)}
-          </button>
+              key={page}
+              className={
+                activePage === page
+                  ? "active"
+                  : ""
+              }
+              onClick={() => {
+                setActivePage(page);
+                setSelectedMachine(null);
+              }}
+            >
+              {page.charAt(0).toUpperCase() +
+                page.slice(1)}
+            </button>
           ))}
         </nav>
+
+        <button
+          className="logout-button"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
       </aside>
 
       <main className="main-content">
         <header className="page-header">
           <div>
-            <p className="eyebrow">Real-time factory telemetry</p>
-            <h1>{pageTitles[activePage]}</h1>
-            <p className="subtitle">{pageSubtitles[activePage]}</p>
+            <p className="eyebrow">
+              Real-time factory telemetry
+            </p>
+
+            <h1>
+              {pageTitles[activePage]}
+            </h1>
+
+            <p className="subtitle">
+              {
+                pageSubtitles[
+                  activePage
+                ]
+              }
+            </p>
           </div>
 
           <div className="header-status">
             <span className="pulse"></span>
+
             <div>
               <strong>Live system</strong>
-              <small>Updated {lastUpdated || "loading..."}</small>
+
+              <small>
+                Updated{" "}
+                {lastUpdated ||
+                  "loading..."}
+              </small>
             </div>
           </div>
         </header>

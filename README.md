@@ -1,68 +1,18 @@
 # Industrial Monitoring Platform
 
-A full-stack industrial monitoring platform built with **Spring Boot**, **PostgreSQL**, **Docker** and **React**.
+A full-stack industrial monitoring platform built with **Spring Boot**, **React**, **PostgreSQL** and **Docker**.
 
-This project simulates a real-world factory monitoring system where industrial machines, sensors, telemetry readings and alerts are managed through a modern dashboard.
-
----
-
-## Overview
-
-The goal of this project is to demonstrate a complete full-stack application with:
-
-- backend architecture
-- REST APIs
-- database relationships
-- authentication
-- real-time-like monitoring
-- dashboard UI
-- Dockerized environment
-
-The platform includes automatic sensor reading generation, alert detection, alert resolution, CRUD operations and JWT-based authentication.
+The application simulates a real-world industrial monitoring environment where machines, sensors, telemetry readings and alerts are managed through a modern dashboard interface.
 
 ---
 
-## Tech Stack
+# Live Demo
 
-### Backend
+Frontend:
 
-- Java 25
-- Spring Boot
-- Spring Data JPA
-- Hibernate
-- PostgreSQL
-- Spring Security
-- JWT Authentication
-- BCrypt password hashing
-- Maven
-- Docker
-
-### Frontend
-
-- React
-- Vite
-- Axios
-- Recharts
-- CSS
-- Docker
-
-### Database
-
-- PostgreSQL
-
----
-
-## Features
-
-### Authentication
-
-- Login system
-- JWT token generation
-- Protected API endpoints
-- Token persistence in frontend
-- Logout
-- BCrypt password hashing
-- Demo admin user created automatically
+```txt
+https://industrial-monitoring-platform.vercel.app
+```
 
 Demo credentials:
 
@@ -71,29 +21,98 @@ username: admin
 password: admin123
 ```
 
+> Note: The backend is hosted on a free Render instance, so the first request may take a few seconds to wake up.
+
 ---
 
-### Dashboard
+# Overview
 
-- Overview page
+This project demonstrates:
+
+- Full-stack architecture
+- REST API development
+- PostgreSQL integration
+- JWT authentication
+- Real-time-like telemetry updates
+- CRUD operations
+- Dashboard UI development
+- Dockerized infrastructure
+- Cloud deployment
+
+The platform includes automatic sensor reading generation, alert creation and monitoring tools inspired by industrial IoT systems.
+
+---
+
+# Tech Stack
+
+## Backend
+
+- Java 25
+- Spring Boot
+- Spring Security
+- Spring Data JPA
+- Hibernate
+- JWT Authentication
+- BCrypt Password Hashing
+- PostgreSQL
+- Maven
+- Docker
+
+## Frontend
+
+- React
+- Vite
+- Axios
+- Recharts
+- CSS
+- Docker
+
+## Database
+
+- PostgreSQL
+- Neon (Production)
+
+## Deployment
+
+- Vercel (Frontend)
+- Render (Backend)
+- Neon PostgreSQL (Database)
+
+---
+
+# Features
+
+## Authentication
+
+- JWT login system
+- Protected API endpoints
+- Token persistence
+- Logout functionality
+- BCrypt password hashing
+- Automatic demo admin creation
+
+---
+
+## Dashboard
+
+- Operations overview
 - Statistics cards
 - Live system status
-- Latest sensor readings chart
+- Sensor readings chart
 - Active alerts panel
-- Auto-refresh every 5 seconds
+- Automatic refresh every 5 seconds
 
 ---
 
-### Machines
+## Machines
 
 - Create machines
-- View machine list
 - Edit machines
 - Delete machines
 - Search machines
 - Filter by status
 - Machine detail page
-- Linked sensors per machine
+- Linked sensors
 
 Machine statuses:
 
@@ -105,10 +124,9 @@ OFFLINE
 
 ---
 
-### Sensors
+## Sensors
 
 - Create sensors
-- View sensor inventory
 - Edit sensors
 - Delete sensors
 - Search sensors
@@ -124,26 +142,26 @@ INACTIVE
 
 ---
 
-### Readings
+## Readings
 
-- Automatic reading generation
-- Historical telemetry storage
+- Automatic telemetry generation
+- Historical readings storage
 - Readings chart
 - Paginated readings table
 
 ---
 
-### Alerts
+## Alerts
 
-- Automatic alert generation based on sensor thresholds
-- Prevent duplicate active alerts
-- Resolve alerts manually
-- Active alerts page
-- Alert counter
+- Automatic alert generation
+- Threshold-based monitoring
+- Duplicate alert prevention
+- Manual alert resolution
+- Alerts dashboard
 
 ---
 
-## System Architecture
+# System Architecture
 
 ```txt
 Machine
@@ -152,31 +170,51 @@ Machine
       └── Alerts
 ```
 
-Main backend flow:
+Backend flow:
 
 ```txt
-Controller -> Service -> Repository -> PostgreSQL
+Controller
+    ↓
+Service
+    ↓
+Repository
+    ↓
+PostgreSQL
 ```
 
-Main frontend flow:
+Frontend flow:
 
 ```txt
-React Components -> Axios API Calls -> Spring Boot API
+React Components
+       ↓
+Axios API Calls
+       ↓
+Spring Boot API
+```
+
+Deployment flow:
+
+```txt
+Vercel Frontend
+       ↓
+Render Backend API
+       ↓
+Neon PostgreSQL
 ```
 
 ---
 
-## Docker Setup
+# Docker Setup
 
-The project is fully Dockerized.
+The application is fully Dockerized.
 
-### Run the full application
+## Run the full application
 
 ```bash
 docker compose up --build
 ```
 
-This starts:
+Services:
 
 | Service | URL |
 |---|---|
@@ -186,7 +224,7 @@ This starts:
 
 ---
 
-### Stop containers
+## Stop containers
 
 ```bash
 docker compose down
@@ -194,39 +232,31 @@ docker compose down
 
 ---
 
-### Reset database data
+## Reset database data
 
 ```bash
 docker compose down -v
 ```
 
-Then run again:
-
-```bash
-docker compose up --build
-```
-
-The demo admin user will be recreated automatically.
-
 ---
 
-## Manual Backend Setup
+# Manual Backend Setup
 
-If running without Docker:
+## Run backend
 
 ```bash
 cd backend
 ./mvnw spring-boot:run
 ```
 
-On Windows:
+Windows:
 
 ```powershell
 cd backend
 .\mvnw.cmd spring-boot:run
 ```
 
-Backend runs on:
+Backend URL:
 
 ```txt
 http://localhost:8080
@@ -234,7 +264,9 @@ http://localhost:8080
 
 ---
 
-## Manual Frontend Setup
+# Manual Frontend Setup
+
+## Run frontend
 
 ```bash
 cd frontend
@@ -242,7 +274,7 @@ npm install
 npm run dev
 ```
 
-Frontend runs on:
+Frontend URL:
 
 ```txt
 http://localhost:5173
@@ -250,9 +282,9 @@ http://localhost:5173
 
 ---
 
-## API Endpoints
+# API Endpoints
 
-### Authentication
+## Authentication
 
 ```txt
 POST /api/auth/register
@@ -261,7 +293,7 @@ POST /api/auth/login
 
 ---
 
-### Dashboard
+## Dashboard
 
 ```txt
 GET /api/dashboard
@@ -269,7 +301,7 @@ GET /api/dashboard
 
 ---
 
-### Machines
+## Machines
 
 ```txt
 GET    /api/machines
@@ -280,7 +312,7 @@ DELETE /api/machines/{id}
 
 ---
 
-### Sensors
+## Sensors
 
 ```txt
 GET    /api/sensors
@@ -291,7 +323,7 @@ DELETE /api/sensors/{id}
 
 ---
 
-### Readings
+## Readings
 
 ```txt
 GET /api/readings
@@ -300,7 +332,7 @@ GET /api/sensors/{sensorId}/readings
 
 ---
 
-### Alerts
+## Alerts
 
 ```txt
 GET /api/alerts
@@ -309,64 +341,62 @@ PUT /api/alerts/{id}/resolve
 
 ---
 
-## Screenshots
+# Screenshots
 
-### Dashboard
+## Dashboard
 
 ![Dashboard](screenshots/dashboard.png)
 
-### Machines
+## Machines
 
 ![Machines](screenshots/machines.png)
 
-### Sensors
+## Sensors
 
 ![Sensors](screenshots/sensors.png)
 
 ---
 
-## What I Learned
+# What I Learned
 
-This project helped me practice and understand:
+This project helped me practice and improve:
 
 - Spring Boot architecture
 - REST API development
+- Database modeling
 - PostgreSQL integration
 - JPA/Hibernate relationships
-- Cascade delete
+- Cascade delete handling
 - DTO usage
-- Validation
-- Exception handling
+- Validation and exception handling
 - JWT authentication
 - BCrypt password hashing
 - React component architecture
-- API integration with Axios
+- Axios API integration
 - Dashboard UI design
 - Docker and docker-compose
-- Full-stack project organization
+- Cloud deployment
+- Full-stack application structure
 
 ---
 
-## Future Improvements
+# Future Improvements
 
-Possible next improvements:
+Possible future upgrades:
 
 - WebSocket real-time updates
-- Deployment to cloud
 - Role-based access control
-- Admin/user permissions
-- Export readings to CSV
-- Dark/light mode toggle
+- CSV export
 - Advanced analytics
-- Email or notification alerts
-- Unit and integration tests
+- Dark/light mode
+- Email notifications
 - CI/CD pipeline
+- Unit and integration tests
+- Kubernetes deployment
 
 ---
 
-## Project Status
-
-The project is currently fully functional locally with Docker.
+# Project Status
 
 Current version includes:
 
@@ -374,15 +404,16 @@ Current version includes:
 - Dockerized backend
 - Dockerized PostgreSQL
 - JWT authentication
-- CRUD for machines and sensors
+- CRUD operations
 - Alert system
-- Sensor simulator
+- Automatic sensor simulator
 - Dashboard UI
+- Cloud deployment
 
 ---
 
-## Author
+# Author
 
 **Filipe Néri**
 
-Student project focused on full-stack development, industrial monitoring and backend architecture.
+Full-stack project focused on industrial monitoring systems, backend architecture and modern web development.

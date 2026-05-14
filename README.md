@@ -413,6 +413,6 @@ Current version includes:
 
 ## Author
 
-**Filipe Vale**
+**Filipe Néri**
 
 Full-stack project focused on industrial monitoring systems, backend architecture and modern web development.
